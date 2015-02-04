@@ -9,17 +9,21 @@ var fs = require('fs');
 // The port to run the server on.
 var PORT = 8080;
 
+// The server configuration file.
+var CONFIG = JSON.parse(fs.readFileSync("config.json", "utf8"));
+
 // An object containing all possible urls.
 var URLS = JSON.parse(fs.readFileSync("urls.json", "utf8"));
 
 // MIME types for files.
 var MIME = {
 	"html": "text/html",
-	"css": "text/css"
+	"css": "text/css",
+	"js": "application/javascript",
+	"png": "image/png",
+	"jpeg": "image/jpeg",
+	"gif": "image/gif"
 }
-
-// Dummy test data.
-var TEST_DATA = "Hello World.";
 
 
 // ---------- Functions ---------- //

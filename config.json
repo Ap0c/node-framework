@@ -1,0 +1,7 @@
+{
+	// Location of static files in filesystem (relative to web server).
+	"static_root": "static/",
+	// URL path that signifies a static file.
+	"static_url": "static/"
+
+}
