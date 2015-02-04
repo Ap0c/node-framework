@@ -9,11 +9,14 @@ var fs = require('fs');
 // The port to run the server on.
 var PORT = 8080;
 
+// An object containing all possible urls.
+var URLS = JSON.parse(fs.readFileSync("urls.json", "utf8"));
+
 // Dummy test data.
 var TEST_DATA = "Hello World.";
 
 // HTTP error codes.
-var err_codes = {
+var ERR_CODES = {
 	200: "OK",
 	404: "Not Found",
 	405: "Method Not Allowed"
@@ -25,12 +28,9 @@ var err_codes = {
 // Gets an HTML file from a corresponding url.
 function getFile(request_url) {
 
-	var data = fs.readFileSync("urls.json", "utf8");
-	var urls = JSON.parse(data);
-
-	for (item in urls) {
-		if (urls[item].url == request_url) {
-			return urls[item].file;
+	for (item in URLS) {
+		if (URLS[item].url == request_url) {
+			return URLS[item].file;
 		};
 	}
 
@@ -43,7 +43,7 @@ function getFile(request_url) {
 function error(code, response) {
 
 	response.writeHead(code, {"Content-Type": "text/plain"});
-	response.write(code + ", " + err_codes[code]);
+	response.write(code + ", " + ERR_CODES[code]);
 	response.end();
 
 }
