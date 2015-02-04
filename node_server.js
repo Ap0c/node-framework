@@ -15,6 +15,8 @@ var CONFIG = JSON.parse(fs.readFileSync("config.json", "utf8"));
 // An object containing all possible urls.
 var URLS = JSON.parse(fs.readFileSync("urls.json", "utf8"));
 
+var staticUrlLen = CONFIG.staticUrl.length;
+
 // MIME types for files.
 var MIME = {
 	"html": "text/html",
@@ -28,8 +30,41 @@ var MIME = {
 
 // ---------- Functions ---------- //
 
-// Gets a file from a corresponding url.
-function getFile(request_url) {
+// Returns an error response.
+function error(code, response) {
+
+	response.writeHead(code, {"Content-Type": "text/plain"});
+	response.write(code + ", " + http.STATUS_CODES[code]);
+	response.end();
+	console.log("< " + code);
+
+}
+
+
+// Sends the contents of a static file back to the user.
+function serveStatic(path, response) {
+
+	// Gets file MIME type.
+	var extension = path.split(".").pop();
+	var type = MIME[extension];
+
+	fs.readFile(path, "utf8", function(err, data) {
+
+		if (err) {
+			error(404, response);
+		} else {
+			response.writeHead(200, {"Content-Type": type});
+			response.write(data);
+			response.end();
+		}
+
+	});
+
+}
+
+
+// Gets a page from a corresponding url.
+function getPage(request_url) {
 
 	for (item in URLS) {
 		if (URLS[item].url == request_url) {
@@ -42,48 +77,35 @@ function getFile(request_url) {
 }
 
 
-// Returns an error response.
-function error(code, response) {
+// Returns the contents of the requested page to the client.
+function pageResponse(url, response) {
 
-	response.writeHead(code, {"Content-Type": "text/plain"});
-	response.write(code + ", " + http.STATUS_CODES[code]);
-	response.end();
-	console.log("< " + code);
-
-}
-
-
-// Returns the contents of the requested file to the client.
-function fileResponse(file, response) {
-
-	// Gets file MIME type.
-	var extension = file.split(".").pop();
-	var type = MIME[extension];
-
-	fs.readFile(file, "utf8", function(err, data) {
-
-		if (err) {
-			error(500, response);
-		} else {
-			response.writeHead(200, {"Content-Type": type});
-			response.write(data);
-			response.end();
-		}
-
-	});
-
-}
-
-
-// Responds with either the requested file, or a Not Found error.
-function generateResponse(request, response) {
-
-	var file = getFile(request.url);
+	file = getPage(url);
 
 	if (file != null) {
-		fileResponse(file, response);
+		file = "pages/" + file;
+		serveStatic(file, response);
 	} else {
 		error(404, response);
+	}
+
+}
+
+
+// Responds with either a static file or a full page.
+function generateResponse(request, response) {
+
+	var url = request.url;
+
+	if (url.substring(0, staticUrlLen) == CONFIG.staticUrl) {
+
+		path = CONFIG.staticRoot + url.substring(staticUrlLen);
+		serveStatic(path, response);
+
+	} else {
+
+		pageResponse(url, response);
+
 	}
 
 }
