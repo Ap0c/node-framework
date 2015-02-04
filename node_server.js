@@ -42,17 +42,31 @@ function error(code, response) {
 }
 
 
+// Returns the contents of the requested file to the client.
+function fileResponse(file, response) {
+
+	fs.readFile(file, "utf8", function(err, data) {
+
+		if (err) {
+			error(500, response);
+		} else {
+			response.writeHead(200, {"Content-Type": "text/html"});
+			response.write(data);
+			response.end();
+		}
+
+	});
+
+}
+
+
 // Sends either the response or an error.
 function generateResponse(request, response) {
 
 	var file = getFile(request.url);
 
 	if (file != null) {
-		fs.readFile(file, "utf8", function(error, data) {
-			response.writeHead(200, {"Content-Type": "text/html"});
-			response.write(data);
-			response.end();
-		});
+		fileResponse(file, response);
 	} else {
 		error(404, response);
 	}
