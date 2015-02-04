@@ -6,5 +6,8 @@
 	"file": "index.html"},
 {"url": "/test/",
 	"simple": "test",
-	"file": "testing.html"}
+	"file": "testing.html"},
+{"url": "/styles/index.css",
+	"simple": "index_style",
+	"file": "styles/index.css"}
 ]

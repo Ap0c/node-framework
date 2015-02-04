@@ -12,6 +12,12 @@ var PORT = 8080;
 // An object containing all possible urls.
 var URLS = JSON.parse(fs.readFileSync("urls.json", "utf8"));
 
+// MIME types for files.
+var MIME = {
+	"html": "text/html",
+	"css": "text/css"
+}
+
 // Dummy test data.
 var TEST_DATA = "Hello World.";
 
@@ -38,6 +44,7 @@ function error(code, response) {
 	response.writeHead(code, {"Content-Type": "text/plain"});
 	response.write(code + ", " + http.STATUS_CODES[code]);
 	response.end();
+	console.log("< " + code);
 
 }
 
@@ -45,12 +52,15 @@ function error(code, response) {
 // Returns the contents of the requested file to the client.
 function fileResponse(file, response) {
 
+	var extension = file.split(".").pop();
+	var type = MIME[extension];
+
 	fs.readFile(file, "utf8", function(err, data) {
 
 		if (err) {
 			error(500, response);
 		} else {
-			response.writeHead(200, {"Content-Type": "text/html"});
+			response.writeHead(200, {"Content-Type": type});
 			response.write(data);
 			response.end();
 		}
@@ -91,9 +101,11 @@ function handleRequest(request, response) {
 // Creates a server object.
 var server = http.createServer( function (request, response) {
 
+	console.log("> " + request.method + " " + request.url + " HTTP/" +
+		request.httpVersion);
 	handleRequest(request, response);
 
 });
 
 server.listen(PORT);
-console.log("Server active on localhost:" + PORT);
+console.log("\n** Server active on localhost:" + PORT);
