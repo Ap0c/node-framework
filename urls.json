@@ -1,0 +1,10 @@
+[{"url": "/",
+	"simple": "index",
+	"file": "index.html"},
+{"url": "/index/",
+	"simple": "index",
+	"file": "index.html"},
+{"url": "/test/",
+	"simple": "test",
+	"file": "testing.html"}
+]
