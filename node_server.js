@@ -22,9 +22,9 @@ var MIME = {
 var TEST_DATA = "Hello World.";
 
 
-// ---------- Main ---------- //
+// ---------- Functions ---------- //
 
-// Gets an HTML file from a corresponding url.
+// Gets a file from a corresponding url.
 function getFile(request_url) {
 
 	for (item in URLS) {
@@ -52,6 +52,7 @@ function error(code, response) {
 // Returns the contents of the requested file to the client.
 function fileResponse(file, response) {
 
+	// Gets file MIME type.
 	var extension = file.split(".").pop();
 	var type = MIME[extension];
 
@@ -70,7 +71,7 @@ function fileResponse(file, response) {
 }
 
 
-// Sends either the response or an error.
+// Responds with either the requested file, or a Not Found error.
 function generateResponse(request, response) {
 
 	var file = getFile(request.url);
@@ -98,14 +99,19 @@ function handleRequest(request, response) {
 }
 
 
+// ---------- Main ---------- //
+
 // Creates a server object.
 var server = http.createServer( function (request, response) {
 
+	// Logs requests.
 	console.log("> " + request.method + " " + request.url + " HTTP/" +
 		request.httpVersion);
+	// Handles requests.
 	handleRequest(request, response);
 
 });
 
+// Loop listens on specified port.
 server.listen(PORT);
 console.log("\n** Server active on localhost:" + PORT);
