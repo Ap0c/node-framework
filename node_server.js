@@ -15,13 +15,6 @@ var URLS = JSON.parse(fs.readFileSync("urls.json", "utf8"));
 // Dummy test data.
 var TEST_DATA = "Hello World.";
 
-// HTTP error codes.
-var ERR_CODES = {
-	200: "OK",
-	404: "Not Found",
-	405: "Method Not Allowed"
-}
-
 
 // ---------- Main ---------- //
 
@@ -43,7 +36,7 @@ function getFile(request_url) {
 function error(code, response) {
 
 	response.writeHead(code, {"Content-Type": "text/plain"});
-	response.write(code + ", " + ERR_CODES[code]);
+	response.write(code + ", " + http.STATUS_CODES[code]);
 	response.end();
 
 }
