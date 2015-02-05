@@ -2,6 +2,7 @@
 
 var http = require('http');
 var fs = require('fs');
+var urls = require('./urls.js');
 
 
 // ---------- Setup ---------- //
@@ -13,8 +14,9 @@ var PORT = 8080;
 var CONFIG = JSON.parse(fs.readFileSync("config.json", "utf8"));
 
 // An object containing all possible urls.
-var URLS = JSON.parse(fs.readFileSync("urls.json", "utf8"));
+var URLS = urls();
 
+// The length of the static url string.
 var staticUrlLen = CONFIG.staticUrl.length;
 
 // MIME types for files.
@@ -63,28 +65,11 @@ function serveStatic(path, response) {
 }
 
 
-// Gets a page from a corresponding url.
-function getPage(request_url) {
-
-	for (item in URLS) {
-		if (URLS[item].url == request_url) {
-			return URLS[item].file;
-		};
-	}
-
-	return null;
-
-}
-
-
 // Returns the contents of the requested page to the client.
 function pageResponse(url, response) {
 
-	file = getPage(url);
-
-	if (file != null) {
-		file = "pages/" + file;
-		serveStatic(file, response);
+	if (url in URLS) {
+		URLS[url]["view"](response);
 	} else {
 		error(404, response);
 	}
