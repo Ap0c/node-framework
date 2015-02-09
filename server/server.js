@@ -11,7 +11,7 @@ var urls = require('./urls.js');
 var PORT = 8080;
 
 // The server configuration file.
-var CONFIG = JSON.parse(fs.readFileSync("config.json", "utf8"));
+var CONFIG = JSON.parse(fs.readFileSync("server/config.json", "utf8"));
 
 // An object containing all possible urls.
 var URLS = urls();
@@ -33,7 +33,7 @@ var MIME = {
 // ---------- Functions ---------- //
 
 // Returns an error response.
-function error(code, response) {
+var error = function (code, response) {
 
 	response.writeHead(code, {"Content-Type": "text/plain"});
 	response.write(code + ", " + http.STATUS_CODES[code]);
@@ -44,7 +44,7 @@ function error(code, response) {
 
 
 // Sends the contents of a static file back to the user.
-function serveStatic(path, response) {
+var serveStatic = function (path, response) {
 
 	// Gets file MIME type.
 	var extension = path.split(".").pop();
@@ -66,7 +66,7 @@ function serveStatic(path, response) {
 
 
 // Returns the contents of the requested page to the client.
-function pageResponse(url, response) {
+var pageResponse = function (url, response) {
 
 	if (url in URLS) {
 		URLS[url]["view"](response);
@@ -78,7 +78,7 @@ function pageResponse(url, response) {
 
 
 // Responds with either a static file or a full page.
-function generateResponse(request, response) {
+var generateResponse = function (request, response) {
 
 	var url = request.url;
 
@@ -97,7 +97,7 @@ function generateResponse(request, response) {
 
 
 // Returns a response based upon the request method.
-function handleRequest(request, response) {
+var handleRequest = function (request, response) {
 
 	switch (request.method) {
 		case "GET":
@@ -110,19 +110,29 @@ function handleRequest(request, response) {
 }
 
 
-// ---------- Main ---------- //
+// Launches the server in a loop.
+var launch = function (PORT) {
 
-// Creates a server object.
-var server = http.createServer( function (request, response) {
+	// Creates a server object.
+	var server = http.createServer( function (request, response) {
 
-	// Logs requests.
-	console.log("> " + request.method + " " + request.url + " HTTP/" +
-		request.httpVersion);
-	// Handles requests.
-	handleRequest(request, response);
+		// Logs requests.
+		console.log("> " + request.method + " " + request.url + " HTTP/" +
+			request.httpVersion);
+		// Handles requests.
+		handleRequest(request, response);
 
-});
+	});
 
-// Loop listens on specified port.
-server.listen(PORT);
-console.log("\n** Server active on localhost:" + PORT);
+	// Loop listens on specified port.
+	server.listen(PORT);
+	console.log("\n** Server active on localhost:" + PORT);
+
+}
+
+
+// ---------- Module Exports ---------- //
+
+module.exports = {
+	launch: launch
+}
