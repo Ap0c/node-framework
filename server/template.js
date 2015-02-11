@@ -1,11 +1,9 @@
 // ---------- Requires ---------- //
 
-var fs = require('fs');
-
 
 // ---------- Functions ---------- //
 
-// Opens the template file and runs renderer.
+// Runs the renderer on a template.
 var renderTemplate = function(template, variables) {
 
 	var page = {success: true, data: template};

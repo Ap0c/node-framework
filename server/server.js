@@ -3,7 +3,7 @@
 var http = require('http');
 var fs = require('fs');
 var responses = require('./response.js');
-var urls = require('./urls.js');
+var urls = require('../urls.js');
 
 
 // ---------- Setup ---------- //
@@ -12,7 +12,7 @@ var urls = require('./urls.js');
 var PORT = 8080;
 
 // The server configuration file.
-var CONFIG = JSON.parse(fs.readFileSync("server/config.json", "utf8"));
+var CONFIG = JSON.parse(fs.readFileSync("config.json", "utf8"));
 
 // An object containing all possible urls.
 var URLS = urls();

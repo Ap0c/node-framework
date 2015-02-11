@@ -1,6 +1,6 @@
 // ---------- Requires ---------- //
 
-var responses = require('./response.js');
+var responses = require('./server/response.js');
 
 
 // ---------- View Functions ---------- //
