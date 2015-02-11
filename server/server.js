@@ -2,6 +2,7 @@
 
 var http = require('http');
 var fs = require('fs');
+var responses = require('./response.js');
 var urls = require('./urls.js');
 
 
@@ -32,17 +33,6 @@ var MIME = {
 
 // ---------- Functions ---------- //
 
-// Returns an error response.
-var error = function (code, response) {
-
-	response.writeHead(code, {"Content-Type": "text/plain"});
-	response.write(code + ", " + http.STATUS_CODES[code]);
-	response.end();
-	console.log("< " + code);
-
-}
-
-
 // Sends the contents of a static file back to the user.
 var serveStatic = function (path, response) {
 
@@ -53,11 +43,9 @@ var serveStatic = function (path, response) {
 	fs.readFile(path, "utf8", function(err, data) {
 
 		if (err) {
-			error(404, response);
+			responses.error(response, 404);
 		} else {
-			response.writeHead(200, {"Content-Type": type});
-			response.write(data);
-			response.end();
+			responses.writeResponse(200, response, type, data);
 		}
 
 	});
@@ -66,12 +54,12 @@ var serveStatic = function (path, response) {
 
 
 // Returns the contents of the requested page to the client.
-var pageResponse = function (url, response) {
+var servePage = function (url, response) {
 
 	if (url in URLS) {
 		URLS[url]["view"](response);
 	} else {
-		error(404, response);
+		responses.error(response, 404);
 	}
 
 }
@@ -89,7 +77,7 @@ var generateResponse = function (request, response) {
 
 	} else {
 
-		pageResponse(url, response);
+		servePage(url, response);
 
 	}
 
@@ -104,7 +92,7 @@ var handleRequest = function (request, response) {
 			generateResponse(request, response);
 			break;
 		default:
-			error(405, response);
+			responses.error(response, 405);
 	}
 
 }

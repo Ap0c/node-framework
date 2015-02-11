@@ -1,16 +1,19 @@
+// ---------- Requires ---------- //
+
+var responses = require('./response.js');
+
+
+// ---------- View Functions ---------- //
+
 exports.index = function (response) {
 
-	response.writeHead(200, {"Content-Type": "text/plain"});
-	response.write("Homepage.");
-	response.end();
+	responses.plain(response, "Homepage");
 
 }
 
 
 exports.test = function (response) {
 
-	response.writeHead(200, {"Content-Type": "text/plain"});
-	response.write("Test page.");
-	response.end();
+	responses.render(response, "test.html", null);
 
 }
