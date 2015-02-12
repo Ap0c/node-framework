@@ -1,4 +1,9 @@
+// ---------- Requires ---------- //
+
 views = require('./views.js');
+
+
+// ---------- URLs ---------- //
 
 urls = {
 
@@ -18,6 +23,9 @@ urls = {
 	}
 
 }
+
+
+// ---------- Module Exports ---------- //
 
 module.exports = function() {
 	return urls;

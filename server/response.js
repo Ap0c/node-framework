@@ -86,4 +86,3 @@ module.exports = {
 	plain: plain,
 	render: render
 }
-

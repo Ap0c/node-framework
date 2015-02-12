@@ -14,6 +14,8 @@ exports.index = function (response) {
 
 exports.test = function (response) {
 
-	responses.render(response, "test.html", null);
+	var contents = {var_one: "World", var_two: "Tres."};
+
+	responses.render(response, "test.html", contents);
 
 }
