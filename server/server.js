@@ -8,17 +8,11 @@ var urls = require('../urls.js');
 
 // ---------- Setup ---------- //
 
-// The port to run the server on.
-var PORT = 8080;
-
 // The server configuration file.
 var CONFIG = JSON.parse(fs.readFileSync("config.json", "utf8"));
 
 // An object containing all possible urls.
 var URLS = urls();
-
-// The length of the static url string.
-var staticUrlLen = CONFIG.staticUrl.length;
 
 // MIME types for files.
 var MIME = {
@@ -69,6 +63,7 @@ var servePage = function (url, response) {
 var generateResponse = function (request, response) {
 
 	var url = request.url;
+	var staticUrlLen = CONFIG.staticUrl.length;
 
 	if (url.substring(0, staticUrlLen) == CONFIG.staticUrl) {
 
