@@ -74,7 +74,6 @@ var render = function (response, name, variables) {
 
 	});
 
-
 }
 
 

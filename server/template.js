@@ -1,19 +1,22 @@
 // ---------- Functions ---------- //
 
 // Replaces the variables in the template with their values.
-var fillVariables = function (template, variables) {
+var fillVariables = function (page, variables) {
 
 	var re = /\{\{([^}]+)\}\}/g;
 
-	while (result = re.exec(template)) {
+	while ((result = re.exec(page.data)) && page.success == true) {
 
 		var variable = result[1].trim();
-		var value = variables[variable];
-		template = template.replace(result[0], value);
+
+		if (variable in variables) {
+			var value = variables[variable];
+			page.data = page.data.replace(result[0], value);
+		} else {
+			page.success = false;
+		}
 
 	}
-
-	return template;
 
 }
 
@@ -21,9 +24,9 @@ var fillVariables = function (template, variables) {
 // Runs the renderer on a template.
 var renderTemplate = function (template, variables) {
 
-	template = fillVariables(template, variables);
-
 	var page = {success: true, data: template};
+
+	fillVariables(page, variables);
 
 	return page;
 
