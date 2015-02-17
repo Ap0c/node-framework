@@ -1,13 +1,7 @@
 // ---------- Requires ---------- //
 
 var http = require('http');
-var fs = require('fs');
 var templates = require('./template.js');
-
-
-// ---------- Setup ---------- //
-
-var TEMPLATE_DIR = "templates/"
 
 
 // ---------- Functions ---------- //
@@ -45,31 +39,15 @@ var plain = function (response, words) {
 }
 
 
-// Passes a template through the rendering engine.
-var returnTemplate = function (response, template, variables) {
-
-	page = templates.renderTemplate(template, variables);
-
-	if (page.success) {
-		writeResponse(response, 200, "text/html", page.data);
-	} else {
-		error(response, 500);
-	}
-
-}
-
-
 // Renders a template and returns page.
 var render = function (response, name, variables) {
 
-	name = TEMPLATE_DIR + name;
+	templates.renderTemplate(name, variables, function(page) {
 
-	fs.readFile(name, "utf8", function(err, template) {
-
-		if (err) {
-			error(response, 500);
+		if (page.success) {
+			writeResponse(response, 200, "text/html", page.data);
 		} else {
-			returnTemplate(response, template, variables);
+			error(response, 500);
 		}
 
 	});
