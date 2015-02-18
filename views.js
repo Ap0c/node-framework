@@ -9,7 +9,7 @@ exports.index = function (response) {
 
 	responses.plain(response, "Homepage");
 
-}
+};
 
 
 exports.test = function (response) {
@@ -18,7 +18,7 @@ exports.test = function (response) {
 
 	responses.render(response, "test.html", contents);
 
-}
+};
 
 
 exports.testTwo = function (response) {
@@ -27,7 +27,7 @@ exports.testTwo = function (response) {
 
 	responses.render(response, "testTwo.html", contents);
 
-}
+};
 
 
 exports.testThree = function (response) {
@@ -36,4 +36,4 @@ exports.testThree = function (response) {
 
 	responses.render(response, "testThree.html", contents);
 
-}
+};

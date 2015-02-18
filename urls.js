@@ -32,11 +32,11 @@ urls = {
 		"view": views.testThree
 	}
 
-}
+};
 
 
 // ---------- Module Exports ---------- //
 
 module.exports = function() {
 	return urls;
-}
+};

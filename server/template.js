@@ -5,7 +5,7 @@ var fs = require('fs');
 
 // ---------- Setup ---------- //
 
-var TEMPLATE_DIR = "templates/"
+var TEMPLATE_DIR = "templates/";
 
 
 // ---------- Functions ---------- //
@@ -22,53 +22,53 @@ var replaceVariable = function (page, result) {
 		page.success = false;
 	}
 
-}
+};
 
 
 // Replaces the variables in the template with their values.
 var fillVariables = function (page) {
 
-	var re = /\{\{([^}]+)\}\}/g;
+	var varExp = /\{\{([^}]+)\}\}/g;
 
-	while ((result = re.exec(page.data)) && page.success == true) {
+	while ((result = varExp.exec(page.data)) && page.success === true) {
 
 		replaceVariable(page, result);
 
 	}
 
-}
+};
 
 
 // Returns the contents of a child section.
 var childSection = function(child, sectionName) {
 
 	var re = new RegExp("\{\% section " + sectionName +
-		" \%\}([^{%]+)\{\% endsection " + sectionName + " \%\}")
+		" \%\}([^{%]+)\{\% endsection " + sectionName + " \%\}");
 
 	var result = re.exec(child);
 
 	return result[1];
 
-}
+};
 
 
 // Fills in a specific section in the parent with a child section.
 var fillSection = function(child, parent, startSec, endSec) {
 
-	if (endSec == null) {
+	if (endSec === null) {
 		parent.success = false;
 	} else {
 
 		var sectionContent = childSection(child, startSec[1]);
-		var beforeSection = parent.data.substring(0, startSec["index"] - 1);
+		var beforeSection = parent.data.substring(0, startSec.index - 1);
 		var afterSection = parent.data.substring(
-			endSec["index"] + endSec[0].length);
+			endSec.index + endSec[0].length);
 
 		parent.data = beforeSection + sectionContent + afterSection;
 
 	}
 
-}
+};
 
 
 
@@ -77,7 +77,8 @@ var fillSections = function(child, parent) {
 
 	var startExp = /\{\% section ([^%]+) \%\}/g;
 
-	while ((startSec = startExp.exec(parent.data)) && parent.success == true) {
+	while ((startSec = startExp.exec(parent.data)) &&
+		parent.success === true) {
 
 		var endExp = new RegExp("\{\% endsection " + startSec[1] + " \%\}");
 		var endSec = endExp.exec(parent.data);
@@ -85,7 +86,7 @@ var fillSections = function(child, parent) {
 
 	}
 
-}
+};
 
 
 // Extends a child template from a specified parent.
@@ -103,7 +104,7 @@ var handleInheritance = function(page, parentName, response) {
 
 	});
 
-}
+};
 
 
 // Checks if this templates inherits from another.
@@ -113,20 +114,20 @@ var inheritance = function(page, response) {
 
 	var result = re.exec(page.data);
 
-	if (result != null) {
+	if (result !== null) {
 		handleInheritance(page, result[1], response);
 		return true;
 	}
 
 	return false;
 
-}
+};
 
 
 // Fills the template and returns it to the client.
 var fillTemplate = function (page, response) {
 
-	if (page.vars != undefined) {
+	if (page.vars !== undefined) {
 		fillVariables(page);
 	}
 
@@ -134,7 +135,7 @@ var fillTemplate = function (page, response) {
 		response(page);
 	}
 
-}
+};
 
 
 // Runs the renderer on a template.
@@ -155,11 +156,11 @@ var renderTemplate = function (name, variables, response) {
 
 	});
 
-}
+};
 
 
 // ---------- Module Exports ---------- //
 
 module.exports = {
 	renderTemplate: renderTemplate
-}
+};

@@ -14,7 +14,7 @@ var error = function (response, code) {
 	response.end();
 	console.log("< " + code);
 
-}
+};
 
 
 // Passes the response data back to the user.
@@ -28,7 +28,7 @@ var writeResponse = function (response, code, type, data) {
 		response.end();
 	}
 
-}
+};
 
 
 // Returns response data for simple plain text
@@ -36,7 +36,7 @@ var plain = function (response, words) {
 
 	writeResponse(response, 200, "text/plain", words);
 
-}
+};
 
 
 // Renders a template and returns page.
@@ -52,7 +52,7 @@ var render = function (response, name, variables) {
 
 	});
 
-}
+};
 
 
 // ---------- Module Exports ---------- //
@@ -62,4 +62,4 @@ module.exports = {
 	writeResponse: writeResponse,
 	plain: plain,
 	render: render
-}
+};

@@ -22,7 +22,7 @@ var MIME = {
 	"png": "image/png",
 	"jpeg": "image/jpeg",
 	"gif": "image/gif"
-}
+};
 
 
 // ---------- Functions ---------- //
@@ -44,19 +44,19 @@ var serveStatic = function (path, response) {
 
 	});
 
-}
+};
 
 
 // Returns the contents of the requested page to the client.
 var servePage = function (url, response) {
 
 	if (url in URLS) {
-		URLS[url]["view"](response);
+		URLS[url].view(response);
 	} else {
 		responses.error(response, 404);
 	}
 
-}
+};
 
 
 // Responds with either a static file or a full page.
@@ -76,7 +76,7 @@ var generateResponse = function (request, response) {
 
 	}
 
-}
+};
 
 
 // Returns a response based upon the request method.
@@ -90,7 +90,7 @@ var handleRequest = function (request, response) {
 			responses.error(response, 405);
 	}
 
-}
+};
 
 
 // Launches the server in a loop.
@@ -111,11 +111,11 @@ var launch = function (PORT) {
 	server.listen(PORT);
 	console.log("\n** Server active on localhost:" + PORT);
 
-}
+};
 
 
 // ---------- Module Exports ---------- //
 
 module.exports = {
 	launch: launch
-}
+};
