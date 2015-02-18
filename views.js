@@ -19,3 +19,12 @@ exports.test = function (response) {
 	responses.render(response, "test.html", contents);
 
 }
+
+
+exports.testTwo = function (response) {
+
+	var contents = {var_one: "World"};
+
+	responses.render(response, "testTwo.html", contents);
+
+}

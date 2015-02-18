@@ -18,8 +18,13 @@ urls = {
 	},
 
 	"/test/": {
-		"shortName": "index",
+		"shortName": "test",
 		"view": views.test
+	},
+
+	"/testTwo/": {
+		"shortName": "testTwo",
+		"view": views.testTwo
 	}
 
 }
