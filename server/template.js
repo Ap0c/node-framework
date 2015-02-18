@@ -11,12 +11,12 @@ var TEMPLATE_DIR = "templates/"
 // ---------- Functions ---------- //
 
 // Attempts to replace a specific variable in a template.
-var replaceVariable = function (page, variables, result) {
+var replaceVariable = function (page, result) {
 
 	var variable = result[1].trim();
 
-	if (variable in variables) {
-		var value = variables[variable];
+	if (variable in page.vars) {
+		var value = page.vars[variable];
 		page.data = page.data.replace(result[0], value);
 	} else {
 		page.success = false;
@@ -26,13 +26,13 @@ var replaceVariable = function (page, variables, result) {
 
 
 // Replaces the variables in the template with their values.
-var fillVariables = function (page, variables) {
+var fillVariables = function (page) {
 
 	var re = /\{\{([^}]+)\}\}/g;
 
 	while ((result = re.exec(page.data)) && page.success == true) {
 
-		replaceVariable(page, variables, result);
+		replaceVariable(page, result);
 
 	}
 
@@ -89,12 +89,12 @@ var fillSections = function(child, parent) {
 
 
 // Extends a child template from a specified parent.
-var handleInheritance = function(page, parentName, variables, response) {
+var handleInheritance = function(page, parentName, response) {
 
 	var child = page.data;
 	parentName = parentName;
 
-	renderTemplate(parentName, variables, function(parent) {
+	renderTemplate(parentName, page.vars, function(parent) {
 
 		fillSections(child, parent);
 		page.data = parent.data;
@@ -107,14 +107,14 @@ var handleInheritance = function(page, parentName, variables, response) {
 
 
 // Checks if this templates inherits from another.
-var inheritance = function(page, variables, response) {
+var inheritance = function(page, response) {
 
 	var re = /\{\% extends ([^%]+) \%\}/g;
 
 	var result = re.exec(page.data);
 
 	if (result != null) {
-		handleInheritance(page, result[1], variables, response);
+		handleInheritance(page, result[1], response);
 		return true;
 	}
 
@@ -124,13 +124,13 @@ var inheritance = function(page, variables, response) {
 
 
 // Fills the template and returns it to the client.
-var fillTemplate = function (page, variables, response) {
+var fillTemplate = function (page, response) {
 
-	if (variables != undefined) {
-		fillVariables(page, variables);
+	if (page.vars != undefined) {
+		fillVariables(page);
 	}
 
-	if (!inheritance(page, variables, response)) {
+	if (!inheritance(page, response)) {
 		response(page);
 	}
 
@@ -140,7 +140,7 @@ var fillTemplate = function (page, variables, response) {
 // Runs the renderer on a template.
 var renderTemplate = function (name, variables, response) {
 
-	var page = {success: true, data: ""};
+	var page = {success: true, data: "", vars: variables};
 	name = TEMPLATE_DIR + name;
 
 	fs.readFile(name, "utf8", function(err, template) {
@@ -150,7 +150,7 @@ var renderTemplate = function (name, variables, response) {
 			response(page);
 		} else {
 			page.data = template;
-			fillTemplate(page, variables, response);
+			fillTemplate(page, response);
 		}
 
 	});
