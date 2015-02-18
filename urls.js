@@ -25,6 +25,11 @@ urls = {
 	"/testTwo/": {
 		"shortName": "testTwo",
 		"view": views.testTwo
+	},
+
+	"/testThree/": {
+		"shortName": "testThree",
+		"view": views.testThree
 	}
 
 }

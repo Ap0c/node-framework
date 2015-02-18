@@ -52,22 +52,36 @@ var childSection = function(child, sectionName) {
 }
 
 
+// Fills in a specific section in the parent with a child section.
+var fillSection = function(child, parent, startSec, endSec) {
+
+	if (endSec == null) {
+		parent.success = false;
+	} else {
+
+		var sectionContent = childSection(child, startSec[1]);
+		var beforeSection = parent.data.substring(0, startSec["index"] - 1);
+		var afterSection = parent.data.substring(
+			endSec["index"] + endSec[0].length);
+
+		parent.data = beforeSection + sectionContent + afterSection;
+
+	}
+
+}
+
+
+
 // Fills in all the sections in the parent with the child sections.
 var fillSections = function(child, parent) {
 
-	var re = /\{\% section ([^%]+) \%\}/g;
+	var startExp = /\{\% section ([^%]+) \%\}/g;
 
-	while ((result = re.exec(parent.data)) && parent.success == true) {
+	while ((startSec = startExp.exec(parent.data)) && parent.success == true) {
 
-		console.log("Here");
-		var endSection = new RegExp("\{\% endsection " + result[1] + " \%\}");
-		var resultTwo = endSection.exec(parent.data);
-		if (resultTwo == null) {
-			page.success = false;
-		} else {
-			var contents = childSection(child, result[1]);
-			parent.data = parent.data.substring(0, result["index"] - 1) + contents + parent.data.substring(resultTwo["index"] + resultTwo[0].length);
-		}
+		var endExp = new RegExp("\{\% endsection " + startSec[1] + " \%\}");
+		var endSec = endExp.exec(parent.data);
+		fillSection(child, parent, startSec, endSec);
 
 	}
 
@@ -75,12 +89,12 @@ var fillSections = function(child, parent) {
 
 
 // Extends a child template from a specified parent.
-var handleExtends = function(page, parentName, variables, response) {
+var handleInheritance = function(page, parentName, variables, response) {
 
 	var child = page.data;
 	parentName = parentName;
 
-	renderTemplate(parentName, null, function(parent) {
+	renderTemplate(parentName, variables, function(parent) {
 
 		fillSections(child, parent);
 		page.data = parent.data;
@@ -88,8 +102,6 @@ var handleExtends = function(page, parentName, variables, response) {
 		response(page);
 
 	});
-
-	console.log(page);
 
 }
 
@@ -102,7 +114,7 @@ var inheritance = function(page, variables, response) {
 	var result = re.exec(page.data);
 
 	if (result != null) {
-		handleExtends(page, result[1], variables, response);
+		handleInheritance(page, result[1], variables, response);
 		return true;
 	}
 

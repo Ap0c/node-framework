@@ -28,3 +28,12 @@ exports.testTwo = function (response) {
 	responses.render(response, "testTwo.html", contents);
 
 }
+
+
+exports.testThree = function (response) {
+
+	var contents = {var_one: "cheese"};
+
+	responses.render(response, "testThree.html", contents);
+
+}
