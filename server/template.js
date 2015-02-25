@@ -43,7 +43,7 @@ var fillVariables = function (page) {
 var childSection = function(child, sectionName) {
 
 	var re = new RegExp("\{\% section " + sectionName +
-		" \%\}([^{%]+)\{\% endsection " + sectionName + " \%\}");
+		" \%\}((.|\n)*)\{\% endsection " + sectionName + " \%\}");
 
 	var result = re.exec(child);
 
@@ -128,6 +128,7 @@ var inheritance = function(page, response) {
 var fillTemplate = function (page, response) {
 
 	if (page.vars !== undefined) {
+		console.log(page.vars);
 		fillVariables(page);
 	}
 

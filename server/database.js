@@ -32,3 +32,29 @@ var close = function (database) {
 
 };
 
+
+// Runs a query on the database, calls an optional callback when done.
+var runQuery = function (db, query, callback) {
+
+	db.serialize(function() {
+
+		query();
+
+		if (callback !== undefined) {
+			callback();
+		}
+
+	});
+
+	db.close();
+
+};
+
+
+// ---------- Module Exports ---------- //
+
+module.exports = {
+	connect: connect,
+	close: close,
+	runQuery: runQuery
+};

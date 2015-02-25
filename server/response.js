@@ -2,6 +2,7 @@
 
 var http = require('http');
 var templates = require('./template.js');
+var database = require('./database.js');
 
 
 // ---------- Functions ---------- //
@@ -55,11 +56,26 @@ var render = function (response, name, variables) {
 };
 
 
+// Renders a template with data taken from a database.
+var renderWithData = function (response, name, variables, db, query) {
+
+	db.serialize(function() {
+		query();
+		render(response, name, variables);
+	});
+
+	db.close();
+	console.log("here.");	
+
+};
+
+
 // ---------- Module Exports ---------- //
 
 module.exports = {
 	error: error,
 	writeResponse: writeResponse,
 	plain: plain,
-	render: render
+	render: render,
+	renderWithData: renderWithData
 };
