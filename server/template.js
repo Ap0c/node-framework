@@ -10,30 +10,15 @@ var TEMPLATE_DIR = "templates/";
 
 // ---------- Functions ---------- //
 
-// Attempts to replace a specific variable in a template.
-var replaceVariable = function (page, result) {
-
-	var variable = result[1].trim();
-
-	if (variable in page.vars) {
-		var value = page.vars[variable];
-		page.data = page.data.replace(result[0], value);
-	} else {
-		page.success = false;
-	}
-
-};
-
-
 // Replaces the variables in the template with their values.
 var fillVariables = function (page) {
 
-	var varExp = /\{\{([^}]+)\}\}/g;
+	// var variable = result[1].trim();
 
-	while ((result = varExp.exec(page.data)) && page.success === true) {
-
-		replaceVariable(page, result);
-
+	for (var variable in page.vars) {
+		var pattern = new RegExp("{{ " + variable + " }}", "g");
+		var value = page.vars[variable];
+		page.data = page.data.replace(pattern, value);
 	}
 
 };
@@ -71,7 +56,6 @@ var fillSection = function(child, parent, startSec, endSec) {
 };
 
 
-
 // Fills in all the sections in the parent with the child sections.
 var fillSections = function(child, parent) {
 
@@ -95,6 +79,7 @@ var handleInheritance = function(page, parentName, response) {
 	var child = page.data;
 	parentName = parentName;
 
+	console.log("Rendering parent.");
 	renderTemplate(parentName, page.vars, function(parent) {
 
 		fillSections(child, parent);
@@ -128,7 +113,6 @@ var inheritance = function(page, response) {
 var fillTemplate = function (page, response) {
 
 	if (page.vars !== undefined) {
-		console.log(page.vars);
 		fillVariables(page);
 	}
 

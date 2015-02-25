@@ -1,6 +1,7 @@
 // ---------- Requires ---------- //
 
 var sqlite3 = require("sqlite3").verbose();
+var DB_NAME = "mydb.db";
 
 
 // ---------- Functions ---------- //
@@ -33,15 +34,36 @@ var close = function (database) {
 };
 
 
+var checkFinish = function (lock, onFinish) {
+
+	lock--;
+	if (lock === 0) {
+		onFinish();
+	}
+
+};
+
+
 // Runs a query on the database, calls an optional callback when done.
-var runQuery = function (db, query, callback) {
+var runQueries = function (queries, onFinish) {
+
+	var noQueries = queries.length;
+	var lock = noQueries;
+
+	var db = connect("mydb.db");
 
 	db.serialize(function() {
 
-		query();
-
-		if (callback !== undefined) {
-			callback();
+		for (var i = 0; i < noQueries; i++) {
+			var query = queries[i];
+			if (query.type === "GET") {
+				db.get(query.sql, function (err, data) {
+					query.callback(data);
+					checkFinish(lock, onFinish);
+				});
+			} else if (query.type === "RUN") {
+				db.run(query.sql);
+			}
 		}
 
 	});
@@ -54,7 +76,5 @@ var runQuery = function (db, query, callback) {
 // ---------- Module Exports ---------- //
 
 module.exports = {
-	connect: connect,
-	close: close,
-	runQuery: runQuery
+	runQueries: runQueries
 };

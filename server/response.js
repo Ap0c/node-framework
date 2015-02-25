@@ -57,15 +57,13 @@ var render = function (response, name, variables) {
 
 
 // Renders a template with data taken from a database.
-var renderWithData = function (response, name, variables, db, query) {
+var renderWithData = function (response, name, variables, queries) {
 
-	db.serialize(function() {
-		query();
+	var onFinish = function () {
 		render(response, name, variables);
-	});
+	};
 
-	db.close();
-	console.log("here.");	
+	database.runQueries(queries, onFinish);
 
 };
 

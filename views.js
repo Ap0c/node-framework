@@ -44,14 +44,19 @@ exports.testFour = function (response) {
 
 	var contents = {var_one: "cheese"};
 
-	var db = database.connect("mydb.db");
+	var queries = [
 
-	var query = function() {
-		db.get("SELECT * FROM test", function (err, row) {
-			contents.name = row.name;
-		});
-	};
+		{
+			type: "GET",
+			sql: "SELECT * FROM test",
+			callback: function (row) {
+				contents.surname = row.surname;
+				contents.name = row.name;
+			}
+		}
 
-	responses.renderWithData(response, "testFour.html", contents, db, query);
+	];
+
+	responses.renderWithData(response, "testFour.html", contents, queries);
 
 };
