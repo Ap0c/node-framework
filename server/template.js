@@ -13,8 +13,6 @@ var TEMPLATE_DIR = "templates/";
 // Replaces the variables in the template with their values.
 var fillVariables = function (page) {
 
-	// var variable = result[1].trim();
-
 	for (var variable in page.vars) {
 		var pattern = new RegExp("{{ " + variable + " }}", "g");
 		var value = page.vars[variable];

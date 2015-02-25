@@ -34,11 +34,29 @@ var close = function (database) {
 };
 
 
+// If all queries and callbacks are done, run the finish function.
 var checkFinish = function (lock, onFinish) {
 
 	lock--;
-	if (lock === 0) {
+	if (lock === 0 && onFinish !== undefined) {
 		onFinish();
+	}
+
+};
+
+
+// Runs a specific query, depending on its type.
+var runQuery = function (db, query, lock, onFinish) {
+
+	if (query.type === "GET") {
+
+		db.get(query.sql, function (err, data) {
+			query.callback(data);
+			checkFinish(lock, onFinish);
+		});
+
+	} else if (query.type === "RUN") {
+		db.run(query.sql);
 	}
 
 };
@@ -56,14 +74,7 @@ var runQueries = function (queries, onFinish) {
 
 		for (var i = 0; i < noQueries; i++) {
 			var query = queries[i];
-			if (query.type === "GET") {
-				db.get(query.sql, function (err, data) {
-					query.callback(data);
-					checkFinish(lock, onFinish);
-				});
-			} else if (query.type === "RUN") {
-				db.run(query.sql);
-			}
+			runQuery(db, query, lock, onFinish);
 		}
 
 	});
