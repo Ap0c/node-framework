@@ -77,7 +77,6 @@ var handleInheritance = function(page, parentName, response) {
 	var child = page.data;
 	parentName = parentName;
 
-	console.log("Rendering parent.");
 	renderTemplate(parentName, page.vars, function(parent) {
 
 		fillSections(child, parent);
