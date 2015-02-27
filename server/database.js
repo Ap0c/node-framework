@@ -48,16 +48,24 @@ var checkFinish = function (lock, onFinish) {
 // Runs a specific query, depending on its type.
 var runQuery = function (db, query, lock, onFinish) {
 
+	var succes = true;
+
 	if (query.type === "GET") {
 
 		db.get(query.sql, function (err, data) {
-			query.callback(data);
-			checkFinish(lock, onFinish);
+			if (err) {
+				success = false;
+			} else {
+				query.callback(data);
+				checkFinish(lock, onFinish);
+			}
 		});
 
 	} else if (query.type === "RUN") {
 		db.run(query.sql);
 	}
+
+	return success;
 
 };
 
@@ -67,19 +75,28 @@ var runQueries = function (queries, onFinish) {
 
 	var noQueries = queries.length;
 	var lock = noQueries;
+	var success = true;
 
 	var db = connect("mydb.db");
 
+	if (db === null) {
+		return false;
+	}
+
 	db.serialize(function() {
 
-		for (var i = 0; i < noQueries; i++) {
+		var i = 0;
+		while (i < noQueries && success === true) {
 			var query = queries[i];
-			runQuery(db, query, lock, onFinish);
+			success = runQuery(db, query, lock, onFinish);
+			i++;
 		}
 
 	});
 
 	db.close();
+
+	return success;
 
 };
 

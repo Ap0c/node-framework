@@ -63,7 +63,9 @@ var renderWithData = function (response, name, variables, queries) {
 		render(response, name, variables);
 	};
 
-	database.runQueries(queries, onFinish);
+	if (!database.runQueries(queries, onFinish)) {
+		error(response, 500);
+	}
 
 };
 
