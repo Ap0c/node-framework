@@ -45,22 +45,30 @@ var checkFinish = function (lock, onFinish) {
 };
 
 
+// Handles the situation where data is retrieved.
+var processData = function (db, query, lock, onFinish, success) {
+
+	db.get(query.sql, function (err, data) {
+
+		if (err) {
+			success = false;
+		} else {
+			query.callback(data);
+			checkFinish(lock, onFinish);
+		}
+
+	});
+
+};
+
+
 // Runs a specific query, depending on its type.
 var runQuery = function (db, query, lock, onFinish) {
 
-	var succes = true;
+	var success = true;
 
 	if (query.type === "GET") {
-
-		db.get(query.sql, function (err, data) {
-			if (err) {
-				success = false;
-			} else {
-				query.callback(data);
-				checkFinish(lock, onFinish);
-			}
-		});
-
+		processData(db, query, lock, onFinish, success);
 	} else if (query.type === "RUN") {
 		db.run(query.sql);
 	}
@@ -70,22 +78,15 @@ var runQuery = function (db, query, lock, onFinish) {
 };
 
 
-// Runs a query on the database, calls an optional callback when done.
-var runQueries = function (queries, onFinish) {
+// Runs a set of queries on the database.
+var processQueries = function (db, queries, noQueries, lock, onFinish) {
 
-	var noQueries = queries.length;
-	var lock = noQueries;
 	var success = true;
-
-	var db = connect("mydb.db");
-
-	if (db === null) {
-		return false;
-	}
 
 	db.serialize(function() {
 
 		var i = 0;
+
 		while (i < noQueries && success === true) {
 			var query = queries[i];
 			success = runQuery(db, query, lock, onFinish);
@@ -93,6 +94,25 @@ var runQueries = function (queries, onFinish) {
 		}
 
 	});
+
+	return success;
+
+};
+
+
+// Opens up a database connection and runs queries.
+var runQueries = function (queries, onFinish) {
+
+	var noQueries = queries.length;
+	var lock = noQueries;
+
+	var db = connect("mydb.db");
+
+	if (db === null) {
+		return false;
+	}
+
+	var success = processQueries(db, queries, noQueries, lock, onFinish);
 
 	db.close();
 
