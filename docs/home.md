@@ -33,6 +33,15 @@ Inheritance involves taking a parent template and filling certain predefined sec
 
 Variables are a way of inserting data into templates at the time of rendering. So, for example, on a blog site you could have a generic article template and then insert the content for a specific article at the time the user asks for it. Variables are defined in view functions, possibly through querying a database, and passed to the template engine. In the template they are defined using the `{{ <variable_name> }}` tag, which will be replaced with the contents of the variable during rendering.
 
+### Static Files
+
+Static files may be served directly by the framework, or by a web server such as Nginx running in front of the framework. They are stored within the `static` directory. The server knows to look for a static file through a user-defined URL prefix, which defaults to `/static/`.
+
 ## Third Party Software
 
 So far, the only third party package used is node-sqlite3, simply because building a full set of database bindings would have required an excessive amount of work relative to the scale of this project. This package may be found on Github [here](https://github.com/mapbox/node-sqlite3), and on the npm site [here](https://www.npmjs.com/package/sqlite3).
+
+## Future Plans
+
+* Expanding the template engine to include control logic statements, like loops and conditionals.
+* Adding regular expressions and variable capture to the URL routing components.

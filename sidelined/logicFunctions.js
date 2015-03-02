@@ -9,7 +9,7 @@ var handleStatement = function (page, statement) {
 		page.success = false;
 	}
 
-}
+};
 
 
 // Parses logic statement.
@@ -23,7 +23,7 @@ var processStatement = function (page, result) {
 		page.success = false;
 	}
 
-}
+};
 
 
 // Carries out logic statements in the template.
@@ -31,10 +31,10 @@ var processLogic = function (page) {
 
 	var re = /\{\%([^%]+)\%\}/g;
 
-	while ((result = re.exec(page.data)) && page.success == true) {
+	while ((result = re.exec(page.data)) && page.success === true) {
 
 		processStatement(page, result);
 
 	}
 
-}
+};
