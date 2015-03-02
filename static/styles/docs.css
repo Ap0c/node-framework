@@ -1,0 +1,23 @@
+main {
+	font-family: HelveticaNeue, Verdana, Arial, sans-serif;
+}
+
+p, ul {
+	line-height: 150%;
+}
+
+h1, h2, h3 {
+	border-bottom: 1px solid #dddddd;
+	padding-bottom: 0.5em;
+}
+
+@media (min-width: 42em) {
+
+	main {
+		width: 42em;
+		margin: 0 auto;
+		border: 0.1em solid #dddddd;
+		padding: 1em 2em;
+	}
+
+}

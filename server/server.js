@@ -39,7 +39,7 @@ var serveStatic = function (path, response) {
 		if (err) {
 			responses.error(response, 404);
 		} else {
-			responses.writeResponse(200, response, type, data);
+			responses.writeResponse(response, 200, type, data);
 		}
 
 	});

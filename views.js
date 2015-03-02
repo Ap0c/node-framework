@@ -15,7 +15,21 @@ exports.index = function (response) {
 
 exports.docs = function (response) {
 
-	responses.render(response, "docs_home.html");
+	var contents = {};
+
+	var queries = [
+
+		{
+			type: "GET",
+			sql: "SELECT * FROM docs",
+			callback: function(row) {
+				contents.content = row.content;
+			}
+		}
+
+	];
+
+	responses.renderWithData(response, "docs_home.html", contents, queries);
 
 };
 

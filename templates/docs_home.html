@@ -1,3 +1,11 @@
 {% extends docs_base.html %}
 
-{% section content %}These are the docs.{% endsection content %}
+{% section head %}
+<link rel="stylesheet" href="/static/styles/docs.css">
+{% endsection head %}
+
+{% section content %}
+<main>
+	{{ content }}
+</main>
+{% endsection content %}
