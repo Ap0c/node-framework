@@ -1,7 +1,13 @@
 // ---------- Requires ---------- //
 
 var sqlite3 = require("sqlite3").verbose();
-var DB_NAME = "mydb.db";
+var fs = require("fs");
+
+
+// ---------- Setup ---------- //
+
+var CONFIG = JSON.parse(fs.readFileSync("config.json", "utf8"));
+var DB_NAME = CONFIG.databaseName;
 
 
 // ---------- Functions ---------- //

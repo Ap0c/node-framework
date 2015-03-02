@@ -13,6 +13,13 @@ exports.index = function (response) {
 };
 
 
+exports.docs = function (response) {
+
+	responses.render(response, "docs_home.html");
+
+};
+
+
 exports.test = function (response) {
 
 	var contents = {var_one: "World", var_two: "Tres."};

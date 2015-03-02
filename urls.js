@@ -17,6 +17,11 @@ urls = {
 		"view": views.index
 	},
 
+	"/docs/": {
+		"shortName": "docs",
+		"view": views.docs
+	},
+
 	"/test/": {
 		"shortName": "test",
 		"view": views.test

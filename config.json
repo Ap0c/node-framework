@@ -1,6 +1,7 @@
 {
 
 	"staticRoot": "static/",
-	"staticUrl": "/static/"
+	"staticUrl": "/static/",
+	"databaseName": "mydb.db"
 
 }
