@@ -1,0 +1,22 @@
+{
+  "name": "NodeServer",
+  "version": "1.0.0",
+  "description": "A simple web framework written using Node.",
+  "main": "run.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "sqlite3": "^3.0.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "framework",
+    "web"
+  ],
+  "license": "ISC",
+}
