@@ -54,7 +54,7 @@ exports.testTwo = function (response) {
 
 exports.testThree = function (response) {
 
-	var contents = {var_one: "cheese"};
+	var contents = {var_one: "blah"};
 
 	responses.render(response, "testThree.html", contents);
 
@@ -63,7 +63,7 @@ exports.testThree = function (response) {
 
 exports.testFour = function (response) {
 
-	var contents = {var_one: "cheese"};
+	var contents = {var_one: "blah"};
 
 	var queries = [
 
