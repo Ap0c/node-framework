@@ -6,17 +6,20 @@ An attempt to develop a full web backend using Node.js, comprised of the followi
 * Template engine - simple rendering of pages upon request.
 * Database interface - supports SQLite3.
 * URL routing - separates out url patterns from site structure.
+* View functions - run arbitrary JavaScript code to handle requests.
 
 ## Structure
 
 ### The Server Source Code
 
-This is responsible for running the server, and in production would not ideally be visible to the person creating the site, but rather would be stored somewhere in a node package. It is contained within the `server` directory, and consists of the following files:
+This is responsible for running the server. In production it would not ideally be visible to the person creating the site, but would instead be stored somewhere in a node package. It is contained within the `server` directory, and consists of the following files:
 
 * database.js - responsible for handling database connections and running queries.
 * response.js - contains a set of functions that generate http responses based upon the needs of the website builder.
 * server.js - the nuts and bolts of the web server, handles client requests and determines appropriate responses.
 * template.js - the template engine.
+
+### User Source Files
 
 The remainder of the source code is meant to be user-facing (for website designers), and consists of the following files:
 
@@ -27,11 +30,13 @@ The remainder of the source code is meant to be user-facing (for website designe
 
 ### Templates
 
-User-designed templates, stored in the `templates` directory. The syntax for these is based upon that used in a number of Python template engines, such as Django and Jinja2. Currently two major features have been implemented, inheritance and variables.
+User-designed templates, stored in the `templates` directory. The syntax for these is based upon that used in a number of Python template engines, such as Django and Jinja2. Currently two major features have been implemented: inheritance and variables.
 
-Inheritance involves taking a parent template and filling certain predefined sections within it with the contents of one or more child templates. It is commonly used to reduce the amount of boilerplate that must be written into each page, like the DOCTYPE, navbar and so on, by placing it once in a base, parent template. Various pages in the site then simply extend this base template and get all of this boilerplate for free. This is performed through the `{% extends 'parent.html' %}` tag, and the sections are defined by the `{% section <section_name> %}Section content.{% endsection <section_name> %}` tags.
+Inheritance involves taking a parent template and filling certain predefined sections within it with the contents of one or more child templates. It is commonly used to reduce the amount of boilerplate that must be written into each page (DOCTYPE, navbar and so on) by placing it once in a base, parent template. Various pages in the site then simply extend the base template and get all of this boilerplate for free. This is performed through the `{% extends 'parent.html' %}` tag, and the sections are defined by the tags:
 
-Variables are a way of inserting data into templates at the time of rendering. So, for example, on a blog site you could have a generic article template and then insert the content for a specific article at the time the user asks for it. Variables are defined in view functions, possibly through querying a database, and passed to the template engine. In the template they are defined using the `{{ <variable_name> }}` tag, which will be replaced with the contents of the variable during rendering.
+```{ % section <section_name> % }Section content.{ % endsection <section_name> % }```
+
+Variables are a way of inserting data into templates at the time of rendering. In the case of a blog site, for example, you could take a generic article template and insert the content for a specific article at the time the user asks for it. Variables are defined in view functions, perhaps filled by querying a database, and passed to the template engine. In the template they are defined using the `{{ <variable_name> }}` tag, which will be replaced with the contents of the variable during rendering.
 
 ### Static Files
 

@@ -7,13 +7,14 @@
 <li>Template engine - simple rendering of pages upon request.</li>
 <li>Database interface - supports SQLite3.</li>
 <li>URL routing - separates out url patterns from site structure.</li>
+<li>View functions - run arbitrary JavaScript code to handle requests.</li>
 </ul>
 
 <h2 id="structure">Structure</h2>
 
 <h3 id="theserversourcecode">The Server Source Code</h3>
 
-<p>This is responsible for running the server, and in production would not ideally be visible to the person creating the site, but rather would be stored somewhere in a node package. It is contained within the <code>server</code> directory, and consists of the following files:</p>
+<p>This is responsible for running the server. In production it would not ideally be visible to the person creating the site, but would instead be stored somewhere in a node package. It is contained within the <code>server</code> directory, and consists of the following files:</p>
 
 <ul>
 <li>database.js - responsible for handling database connections and running queries.</li>
@@ -21,6 +22,8 @@
 <li>server.js - the nuts and bolts of the web server, handles client requests and determines appropriate responses.</li>
 <li>template.js - the template engine.</li>
 </ul>
+
+<h3 id="usersourcefiles">User Source Files</h3>
 
 <p>The remainder of the source code is meant to be user-facing (for website designers), and consists of the following files:</p>
 
@@ -33,11 +36,13 @@
 
 <h3 id="templates">Templates</h3>
 
-<p>User-designed templates, stored in the <code>templates</code> directory. The syntax for these is based upon that used in a number of Python template engines, such as Django and Jinja2. Currently two major features have been implemented, inheritance and variables.</p>
+<p>User-designed templates, stored in the <code>templates</code> directory. The syntax for these is based upon that used in a number of Python template engines, such as Django and Jinja2. Currently two major features have been implemented: inheritance and variables.</p>
 
-<p>Inheritance involves taking a parent template and filling certain predefined sections within it with the contents of one or more child templates. It is commonly used to reduce the amount of boilerplate that must be written into each page, like the DOCTYPE, navbar and so on, by placing it once in a base, parent template. Various pages in the site then simply extend this base template and get all of this boilerplate for free. This is performed through the <code>{% extends 'parent.html' %}</code> tag, and the sections are defined by the <code>{% section &lt;section_name&gt; %}Section content.{% endsection &lt;section_name&gt; %}</code> tags.</p>
+<p>Inheritance involves taking a parent template and filling certain predefined sections within it with the contents of one or more child templates. It is commonly used to reduce the amount of boilerplate that must be written into each page (DOCTYPE, navbar and so on) by placing it once in a base, parent template. Various pages in the site then simply extend the base template and get all of this boilerplate for free. This is performed through the <code>{% extends 'parent.html' %}</code> tag, and the sections are defined by the tags:</p>
 
-<p>Variables are a way of inserting data into templates at the time of rendering. So, for example, on a blog site you could have a generic article template and then insert the content for a specific article at the time the user asks for it. Variables are defined in view functions, possibly through querying a database, and passed to the template engine. In the template they are defined using the <code>{{ &lt;variable_name&gt; }}</code> tag, which will be replaced with the contents of the variable during rendering.</p>
+<p><code>{ % section &lt;section_name&gt; % }Section content.{ % endsection &lt;section_name&gt; % }</code></p>
+
+<p>Variables are a way of inserting data into templates at the time of rendering. In the case of a blog site, for example, you could take a generic article template and insert the content for a specific article at the time the user asks for it. Variables are defined in view functions, perhaps filled by querying a database, and passed to the template engine. In the template they are defined using the <code>{{ &lt;variable_name&gt; }}</code> tag, which will be replaced with the contents of the variable during rendering.</p>
 
 <h3 id="staticfiles">Static Files</h3>
 
