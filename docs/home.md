@@ -30,11 +30,15 @@ The remainder of the source code is meant to be user-facing (for website designe
 
 ### Templates
 
-User-designed templates, stored in the `templates` directory. The syntax for these is based upon that used in a number of Python template engines, such as Django and Jinja2. Currently two major features have been implemented: inheritance and variables.
+User-designed templates, stored in the `templates` directory. The syntax for these is based upon that used in a number of Python template engines, such as [Jinja2](http://jinja.pocoo.org). Currently two major features have been implemented: inheritance and variables.
 
 Inheritance involves taking a parent template and filling certain predefined sections within it with the contents of one or more child templates. It is commonly used to reduce the amount of boilerplate that must be written into each page (DOCTYPE, navbar and so on) by placing it once in a base, parent template. Various pages in the site then simply extend the base template and get all of this boilerplate for free. This is performed through the `{% extends 'parent.html' %}` tag, and the sections are defined by the tags:
 
-```{ % section <section_name> % }Section content.{ % endsection <section_name> % }```
+```
+{ % section <section_name> % }
+    Section content.
+{ % endsection <section_name> % }
+```
 
 Variables are a way of inserting data into templates at the time of rendering. In the case of a blog site, for example, you could take a generic article template and insert the content for a specific article at the time the user asks for it. Variables are defined in view functions, perhaps filled by querying a database, and passed to the template engine. In the template they are defined using the `{{ <variable_name> }}` tag, which will be replaced with the contents of the variable during rendering.
 

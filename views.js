@@ -6,34 +6,14 @@ var database = require('./server/database.js');
 
 // ---------- View Functions ---------- //
 
+// Index page.
 exports.index = function (response) {
 
 	responses.plain(response, "Homepage");
 
 };
 
-
-exports.docs = function (response) {
-
-	var contents = {};
-
-	var queries = [
-
-		{
-			type: "GET",
-			sql: "SELECT * FROM docs",
-			callback: function(row) {
-				contents.content = row.content;
-			}
-		}
-
-	];
-
-	responses.renderWithData(response, "docs_home.html", contents, queries);
-
-};
-
-
+// First test.
 exports.test = function (response) {
 
 	var contents = {var_one: "World", var_two: "Tres."};
@@ -42,7 +22,7 @@ exports.test = function (response) {
 
 };
 
-
+// Second test.
 exports.testTwo = function (response) {
 
 	var contents = {var_one: "World"};
@@ -51,7 +31,7 @@ exports.testTwo = function (response) {
 
 };
 
-
+// Third test.
 exports.testThree = function (response) {
 
 	var contents = {var_one: "blah"};
@@ -60,7 +40,7 @@ exports.testThree = function (response) {
 
 };
 
-
+// Fourth test.
 exports.testFour = function (response) {
 
 	var contents = {var_one: "blah"};

@@ -1,4 +1,4 @@
-<h1 id="nodeframework-documentation">Node Framework - Documentation</h1>
+<h1>Node Framework - Documentation</h1>
 
 <p>An attempt to develop a full web backend using Node.js, comprised of the following:</p>
 
@@ -10,9 +10,9 @@
 <li>View functions - run arbitrary JavaScript code to handle requests.</li>
 </ul>
 
-<h2 id="structure">Structure</h2>
+<h2>Structure</h2>
 
-<h3 id="theserversourcecode">The Server Source Code</h3>
+<h3>The Server Source Code</h3>
 
 <p>This is responsible for running the server. In production it would not ideally be visible to the person creating the site, but would instead be stored somewhere in a node package. It is contained within the <code>server</code> directory, and consists of the following files:</p>
 
@@ -23,7 +23,7 @@
 <li>template.js - the template engine.</li>
 </ul>
 
-<h3 id="usersourcefiles">User Source Files</h3>
+<h3>User Source Files</h3>
 
 <p>The remainder of the source code is meant to be user-facing (for website designers), and consists of the following files:</p>
 
@@ -34,25 +34,29 @@
 <li>views.js - the set of user-designed functions used to perform actions when a request is received, such as rendering and returning a template.</li>
 </ul>
 
-<h3 id="templates">Templates</h3>
+<h3>Templates</h3>
 
-<p>User-designed templates, stored in the <code>templates</code> directory. The syntax for these is based upon that used in a number of Python template engines, such as Django and Jinja2. Currently two major features have been implemented: inheritance and variables.</p>
+<p>User-designed templates, stored in the <code>templates</code> directory. The syntax for these is based upon that used in a number of Python template engines, such as <a href="http://jinja.pocoo.org">Jinja2</a>. Currently two major features have been implemented: inheritance and variables.</p>
 
 <p>Inheritance involves taking a parent template and filling certain predefined sections within it with the contents of one or more child templates. It is commonly used to reduce the amount of boilerplate that must be written into each page (DOCTYPE, navbar and so on) by placing it once in a base, parent template. Various pages in the site then simply extend the base template and get all of this boilerplate for free. This is performed through the <code>{% extends 'parent.html' %}</code> tag, and the sections are defined by the tags:</p>
 
-<p><code>{ % section &lt;section_name&gt; % }Section content.{ % endsection &lt;section_name&gt; % }</code></p>
+<p><code>
+{ % section &lt;section_name&gt; % }
+    Section content.
+{ % endsection &lt;section_name&gt; % }
+</code></p>
 
 <p>Variables are a way of inserting data into templates at the time of rendering. In the case of a blog site, for example, you could take a generic article template and insert the content for a specific article at the time the user asks for it. Variables are defined in view functions, perhaps filled by querying a database, and passed to the template engine. In the template they are defined using the <code>{{ &lt;variable_name&gt; }}</code> tag, which will be replaced with the contents of the variable during rendering.</p>
 
-<h3 id="staticfiles">Static Files</h3>
+<h3>Static Files</h3>
 
 <p>Static files may be served directly by the framework, or by a web server such as Nginx running in front of the framework. They are stored within the <code>static</code> directory. The server knows to look for a static file through a user-defined URL prefix, which defaults to <code>/static/</code>.</p>
 
-<h2 id="thirdpartysoftware">Third Party Software</h2>
+<h2>Third Party Software</h2>
 
 <p>So far, the only third party package used is node-sqlite3, simply because building a full set of database bindings would have required an excessive amount of work relative to the scale of this project. This package may be found on Github <a href="https://github.com/mapbox/node-sqlite3">here</a>, and on the npm site <a href="https://www.npmjs.com/package/sqlite3">here</a>.</p>
 
-<h2 id="futureplans">Future Plans</h2>
+<h2>Future Plans</h2>
 
 <ul>
 <li>Expanding the template engine to include control logic statements, like loops and conditionals.</li>
