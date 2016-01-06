@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Node Framework by Ap0c</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Node Framework</h1>
+      <h2 class="project-tagline">A simple server and web framework built in node.js.</h2>
+      <a href="https://github.com/Ap0c/node-framework" class="btn">View on GitHub</a>
+      <a href="https://github.com/Ap0c/node-framework/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Ap0c/node-framework/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p>This project is an attempt to develop a full web backend using Node.js, comprised of the following:</p>
+
+<ul>
+<li>Web server - capable of serving pages and static files.</li>
+<li>Template engine - simple rendering of pages upon request.</li>
+<li>Database interface - supports SQLite3.</li>
+<li>URL routing - separates out url patterns from site structure.</li>
+<li>View functions - run arbitrary JavaScript code to handle requests.</li>
+</ul>
+
+<h1>
+<a id="structure" class="anchor" href="#structure" aria-hidden="true"><span class="octicon octicon-link"></span></a>Structure</h1>
+
+<h2>
+<a id="the-server-source-code" class="anchor" href="#the-server-source-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Server Source Code</h2>
+
+<p>This is responsible for running the server. In production it would not ideally be visible to the person creating the site, but would instead be stored somewhere in a node package. It is contained within the <code>server</code> directory, and consists of the following files:</p>
+
+<ul>
+<li>database.js - responsible for handling database connections and running queries.</li>
+<li>response.js - contains a set of functions that generate http responses based upon the needs of the website builder.</li>
+<li>server.js - the nuts and bolts of the web server, handles client requests and determines appropriate responses.</li>
+<li>template.js - the template engine.</li>
+</ul>
+
+<h2>
+<a id="user-source-files" class="anchor" href="#user-source-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>User Source Files</h2>
+
+<p>The remainder of the source code is meant to be user-facing (for website designers), and consists of the following files:</p>
+
+<ul>
+<li>run.js - used to launch the server, and set the port to listen on.</li>
+<li>config.json - a set of server configuration options stored in JSON format.</li>
+<li>urls.js - for URL routing, builds an object in which URL patterns are defined and connected to corresponding views.</li>
+<li>views.js - the set of user-designed functions used to perform actions when a request is received, such as rendering and returning a template.</li>
+</ul>
+
+<h2>
+<a id="templates" class="anchor" href="#templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Templates</h2>
+
+<p>User-designed templates, stored in the <code>templates</code> directory. The syntax for these is based upon that used in a number of Python template engines, such as <a href="http://jinja.pocoo.org">Jinja2</a>. Currently two major features have been implemented: inheritance and variables.</p>
+
+<p>Inheritance involves taking a parent template and filling certain predefined sections within it with the contents of one or more child templates. It is commonly used to reduce the amount of boilerplate that must be written into each page (DOCTYPE, navbar and so on) by placing it once in a base, parent template. Various pages in the site then simply extend the base template and get all of this boilerplate for free. This is performed through the <code>{% extends 'parent.html' %}</code> tag, and the sections are defined by the tags:</p>
+
+<pre><code>{ % section &lt;section_name&gt; % }
+    Section content.
+{ % endsection &lt;section_name&gt; % }
+</code></pre>
+
+<p>Variables are a way of inserting data into templates at the time of rendering. In the case of a blog site, for example, you could take a generic article template and insert the content for a specific article at the time the user asks for it. Variables are defined in view functions, perhaps filled by querying a database, and passed to the template engine. In the template they are defined using the <code>{{ &lt;variable_name&gt; }}</code> tag, which will be replaced with the contents of the variable during rendering.</p>
+
+<h2>
+<a id="static-files" class="anchor" href="#static-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>Static Files</h2>
+
+<p>Static files may be served directly by the framework, or by a web server such as Nginx running in front of the framework. They are stored within the <code>static</code> directory. The server knows to look for a static file through a user-defined URL prefix, which defaults to <code>/static/</code>.</p>
+
+<h1>
+<a id="third-party-software" class="anchor" href="#third-party-software" aria-hidden="true"><span class="octicon octicon-link"></span></a>Third Party Software</h1>
+
+<p>So far, the only third party package used is node-sqlite3, simply because building a full set of database bindings would have required an excessive amount of work relative to the scale of this project. This package may be found on Github <a href="https://github.com/mapbox/node-sqlite3">here</a>, and on the npm site <a href="https://www.npmjs.com/package/sqlite3">here</a>.</p>
+
+<h1>
+<a id="future-plans" class="anchor" href="#future-plans" aria-hidden="true"><span class="octicon octicon-link"></span></a>Future Plans</h1>
+
+<ul>
+<li>Expanding the template engine to include control logic statements, like loops and conditionals.</li>
+<li>Adding regular expressions and variable capture to the URL routing components.</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Ap0c/node-framework">Node Framework</a> is maintained by <a href="https://github.com/Ap0c">Ap0c</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
